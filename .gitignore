@@ -1,0 +1,65 @@
+# Python
+__pycache__/
+*.py[codz]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+MANIFEST
+
+# Distribution
+build/
+dist/
+*.spec
+
+# Testing
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
+.tox/
+.nox/
+
+# Virtual environments
+.venv
+venv/
+env/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.env
+.envrc 
+#   you could uncomment the following to ignore the entire vscode folder
+# .vscode/
+# Temporary file for partial code execution
+tempCodeRunnerFile.py
+
+# Ruff stuff:
+.ruff_cache/
+
+# PyPI configuration file
+.pypirc
+
+# Marimo
+marimo/_static/
+marimo/_lsp/
+__marimo__/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Ignore all dataset files
+data/**
+
+# Keep folder structure
+!data/
+!data/raw/
+!data/processed/
+
+# Keep drive link files
+!data/raw/link_raw.txt
+!data/processed/link_processed.txt
