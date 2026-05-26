@@ -5,6 +5,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATASET_ROOT_DEFAULT = PROJECT_ROOT / "data" / "processed" / "yolo_dataset_processed"
+# DATASET_ROOT_DEFAULT = PROJECT_ROOT / "data" / "raw" / "yolo_dataset"
 RUNS_ROOT = (PROJECT_ROOT/ "runs"/ "object_detection")
 
 

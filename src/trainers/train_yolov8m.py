@@ -1,41 +1,54 @@
-"""YOLOv8m training pipeline."""
-
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
 from ultralytics import YOLO
 
 from utils.metrics import save_metrics
 
 
+# ======================
+# 1. BUILD MODEL
+# ======================
 def build_model(weights: str = "yolov8m.pt") -> YOLO:
-    """Initialize YOLOv8m model with pretrained weights."""
+    """Load pretrained YOLOv8 model."""
     return YOLO(weights)
 
 
+# ======================
+# 2. TRAIN
+# ======================
 def train_model(
     model: YOLO,
     data_yaml: Path,
     project_dir: Path,
     name: str,
+    epochs: int = 10,
+    batch: int = 16,
+    imgsz: int = 640,
     seed: int = 42,
 ) -> Any:
-    """Train the model with predefined settings."""
+    """
+    Train YOLOv8 model.
+    """
     return model.train(
         data=str(data_yaml),
-        epochs=100,
-        imgsz=640,
-        batch=16,
+        # epochs=100,
+        epochs=epochs,
+        imgsz=imgsz,
+        batch=batch,
         patience=20,
         device=0,
-        workers=8,
+        # workers=2,
+        workers=4,        
         amp=True,
         seed=seed,
         project=str(project_dir),
         name=name,
         exist_ok=True,
+
+        # Augmentation
         mosaic=1.0,
-        mixup=0.2,
+        mixup=0.1,         
         hsv_h=0.015,
         hsv_s=0.7,
         hsv_v=0.4,
@@ -45,12 +58,22 @@ def train_model(
     )
 
 
-def evaluate_model(model: YOLO, data_yaml: Path, project_dir: Path, name: str) -> Any:
-    """Evaluate the trained model on the validation set."""
+# ======================
+# 3. VALIDATION
+# ======================
+def evaluate_model(
+    model: YOLO,
+    data_yaml: Path,
+    project_dir: Path,
+    name: str,
+    imgsz: int = 640,
+    batch: int = 8,
+) -> Any:
+    """Run validation."""
     return model.val(
         data=str(data_yaml),
-        imgsz=640,
-        batch=4,
+        imgsz=imgsz,
+        batch=batch,
         device=0,
         project=str(project_dir),
         name=name,
@@ -58,30 +81,67 @@ def evaluate_model(model: YOLO, data_yaml: Path, project_dir: Path, name: str) -
     )
 
 
+# ======================
+# 4. INFERENCE
+# ======================
 def run_inference(
     model: YOLO,
     sample_images: List[Path],
     project_dir: Path,
     name: str,
-) -> Any:
-    """Run inference on sample images."""
-    sources = [str(p) for p in sample_images]
+):
+    """Run prediction on images."""
     return model.predict(
-        source=sources,
+        source=[str(p) for p in sample_images],
+        conf=0.25,
+        save=True,
         project=str(project_dir),
         name=f"{name}/predict",
         exist_ok=True,
-        save=True,
-        conf=0.25,
     )
 
 
-def export_metrics(val_results: Any, output_dir: Path) -> Path:
-    """Export evaluation metrics to JSON."""
-    metrics: Dict[str, Any] = {
-        "map50": float(getattr(val_results.box, "map50", 0.0)),
-        "map50_95": float(getattr(val_results.box, "map", 0.0)),
+# ======================
+# 5. SAVE METRICS
+# ======================
+def extract_metrics(results: Any) -> Dict[str, Any]:
+    """Extract precision/recall/mAP metrics from a YOLO results object."""
+    return {
+        "precision": float(results.box.mp),
+        "recall": float(results.box.mr),
+        "map50": float(results.box.map50),
+        "map50_95": float(results.box.map),
     }
-    output_path = output_dir / "metrics.json"
+
+
+def export_metrics(val_results: Any, output_dir: Path) -> Path:
+    """Save validation metrics."""
+    metrics = extract_metrics(val_results)
+    path = output_dir / "metrics.json"
+    save_metrics(metrics, path)
+    return path
+
+
+def evaluate_test_set(
+    model: YOLO,
+    data_yaml: Path,
+    project_dir: Path,
+    name: str,
+    output_path: Path,
+    imgsz: int = 640,
+    batch: int = 8,
+) -> Dict[str, Any]:
+    """Evaluate the model on the test set and save metrics."""
+    results = model.val(
+        data=str(data_yaml),
+        imgsz=imgsz,
+        batch=batch,
+        device=0,
+        project=str(project_dir),
+        name=f"{name}/test",
+        exist_ok=True,
+        split="test",
+    )
+    metrics = extract_metrics(results)
     save_metrics(metrics, output_path)
-    return output_path
+    return metrics
