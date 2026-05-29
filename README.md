@@ -166,6 +166,32 @@ outputs/
         └── best.pt
 ```
 
+## ▶️ Chạy Training / Evaluation
+Có thể chạy lại toàn bộ quá trình train, validation và test cho từng mô hình bằng các lệnh sau:
+### Faster R-CNN
+
+```bash
+python src/main.py --model cnn
+```
+
+---
+
+### RT-DETR
+
+```bash
+python src/main.py --model transformer
+```
+
+---
+
+### YOLOv8
+
+```bash
+python src/main.py --model yolo
+```
+Sau khi hoàn tất, trọng số mô hình và các kết quả đánh giá sẽ được lưu trong thư mục:
+outputs/
+
 ---
 
 # ▶️ Run Application
@@ -207,3 +233,34 @@ http://127.0.0.1:7860
 ```
 
 Mở đường dẫn này trên trình duyệt để sử dụng ứng dụng.
+
+## Giao diện ứng dụng
+
+<p align="center">
+  <img src="assets/web_ui.png" width="900">
+</p>
+
+<p align="center">
+  <i>Gradio Web UI cho hệ thống Wildlife Object Detection</i>
+</p>
+
+# Detection Results
+
+## Multi-Class Detection
+
+<p align="center">
+  <img src="assets/demo_multi.png" width="850">
+</p>
+
+---
+
+## Single-Class Detection
+
+<p align="center">
+  <img src="assets/demo_tiger.png" width="850">
+</p>
+
+<p align="center">
+  <img src="assets/demo_elephant.png" width="850">
+</p>
+
