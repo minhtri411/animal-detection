@@ -1,27 +1,25 @@
 # Python
 __pycache__/
-*.py[codz]
+*.py[cod]
 *$py.class
 *.so
-*.egg-info/
-*.egg
-MANIFEST
 
-# Distribution
+# Build
 build/
 dist/
+*.egg-info/
+*.egg
 *.spec
+MANIFEST
 
 # Testing
 htmlcov/
 .coverage
 .coverage.*
 .pytest_cache/
-.tox/
-.nox/
 
-# Virtual environments
-.venv
+# Virtual Environment
+.venv/
 venv/
 env/
 ENV/
@@ -29,28 +27,24 @@ ENV/
 # IDE
 .idea/
 .vscode/
-
-# OS
-.env
-.envrc 
-#   you could uncomment the following to ignore the entire vscode folder
-# .vscode/
-# Temporary file for partial code execution
 tempCodeRunnerFile.py
 
-# Ruff stuff:
+# Environment
+.env
+.envrc
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Cache
 .ruff_cache/
 
-# PyPI configuration file
-.pypirc
+# Logs
+*.log
 
-# Marimo
-marimo/_static/
-marimo/_lsp/
-__marimo__/
-
-# Streamlit
-.streamlit/secrets.toml
+# =========================================================
+# DATA
+# =========================================================
 
 # Ignore all dataset files
 data/**
@@ -60,6 +54,22 @@ data/**
 !data/raw/
 !data/processed/
 
-# Keep drive link files
+# Keep download link files
 !data/raw/link_raw.txt
 !data/processed/link_processed.txt
+
+# =========================================================
+# MODEL WEIGHTS
+# =========================================================
+
+# Ignore all trained weights
+outputs/**
+
+# Keep folder structure
+!outputs/
+!outputs/cnn/
+!outputs/rtdetr/
+!outputs/yolov8m/
+
+# Keep download link file
+!outputs/link_outputs.txt

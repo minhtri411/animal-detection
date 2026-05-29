@@ -12,3 +12,5 @@ torchmetrics[detection]
 pycocotools
 transformers
 accelerate
+ultralytics
+gradio
