@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 import argparse
 import json
-
+import torch
 from ultralytics import YOLO
 
 
@@ -66,7 +66,7 @@ def train_model(
         batch=batch,
 
         patience=20,
-        device=0,
+        device = 0 if torch.cuda.is_available() else "cpu",
         workers=4,
 
         amp=True,
@@ -105,7 +105,7 @@ def evaluate_model(
         data=str(data_yaml),
         imgsz=imgsz,
         batch=batch,
-        device=0,
+        device = 0 if torch.cuda.is_available() else "cpu",
 
         project=str(project_dir),
         name=name,
@@ -130,7 +130,7 @@ def evaluate_test_set(
         data=str(data_yaml),
         imgsz=imgsz,
         batch=batch,
-        device=0,
+        device = 0 if torch.cuda.is_available() else "cpu",
 
         split="test",
 
@@ -197,7 +197,7 @@ def parse_args():
     parser.add_argument(
         "--epochs",
         type=int,
-        default=10,
+        default=100,
     )
 
     parser.add_argument(
