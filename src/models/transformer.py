@@ -18,7 +18,7 @@ from transformers import RTDetrForObjectDetection, RTDetrImageProcessor
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATASET_ROOT = PROJECT_ROOT / "data/processed/coco_dataset_processed"  
-OUTPUT_DIR   = PROJECT_ROOT / "outputs / rtdetr" 
+OUTPUT_DIR   = PROJECT_ROOT / "outputs" / "rtdetr"
 MODEL_CHECKPOINT = "PekingU/rtdetr_r50vd"
 
 CONFIG = dict(

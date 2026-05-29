@@ -123,7 +123,7 @@ def main():
     # ===== CONFIG =====
     PROJECT_ROOT = Path(__file__).resolve().parents[2]
     dataset_root = PROJECT_ROOT / "data/processed/coco_dataset_processed" 
-    output_dir = PROJECT_ROOT / "outputs / cnn" 
+    output_dir = PROJECT_ROOT / "outputs" / "cnn"
     output_dir.mkdir(exist_ok=True)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
