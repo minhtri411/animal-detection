@@ -12,7 +12,7 @@ from ultralytics import YOLO
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATASET_ROOT = PROJECT_ROOT / "data/processed/yolo_dataset_processed"
-RUNS_ROOT = PROJECT_ROOT / "outputs" / "yolov8m"
+RUNS_ROOT = PROJECT_ROOT / "outputs"
 
 
 # ======================
